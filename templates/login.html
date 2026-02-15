@@ -8,7 +8,21 @@
       <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  {% with messages = get_flashed_messages() %}
+ 
+
+
+
+
+    <div class="log"><div class="formal">
+ <h2>Login</h2>
+</div>
+  <form method="POST",action="/login">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" name="email"aria-describedby="emailHelp">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+    {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class="alert alert-warning">
       {% for msg in messages %}
@@ -17,17 +31,6 @@
     </ul>
   {% endif %}
 {% endwith %}
-
-
-
-
-    <div class="log">
-  <form method="POST",action="/login">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" name="email"aria-describedby="emailHelp">
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-  </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
     <input type="password" name="password"class="form-control" id="exampleInputPassword1">
@@ -38,6 +41,10 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<div class="formal">
+<a href="{{url_for('sign_in')}}">Sign Up If Not Registered</a>
 </div>
+</div>
+
 </body>
 </html>

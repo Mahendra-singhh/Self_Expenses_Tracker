@@ -9,6 +9,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///stu.db"
 app.secret_key = 'my secret key'
 
 db = SQLAlchemy(app)
+class expense(db.Model):
+    id=
+@app.context_processor
+def inject_user():
+    return dict(username=session.get('user'))
+
+
 
 def login_required(f):
     @wraps(f)
@@ -60,6 +67,25 @@ def sign_in():
     if request.method=='POST':
         email=request.form.get('email')
     return render_template('sigin.html')
+
+@app.route('/Expense',methods=['GET','POST'])
+@login_required
+def Expense():
+    if 'user'in session:
+        
+    if request.method=='POST':
+        expense=request.form.get('expense')
+        amount=request.form.get('amount')
+        try:
+            amount=int(amount)
+        except ValueError:
+            flash("Amount must be a number")
+            return redirect(url_for('Expense'))
+        expenses={"name":expense,"price":amount}
+        
+        return expenses
+   
+    return render_template('Expense.html',expenses)
     
 
 if __name__ == '__main__':
