@@ -9,8 +9,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///stu.db"
 app.secret_key = 'my secret key'
 
 db = SQLAlchemy(app)
-class expense(db.Model):
-    id=
+
+
 @app.context_processor
 def inject_user():
     return dict(username=session.get('user'))
@@ -71,7 +71,7 @@ def sign_in():
 @app.route('/Expense',methods=['GET','POST'])
 @login_required
 def Expense():
-    if 'user'in session:
+    
         
     if request.method=='POST':
         expense=request.form.get('expense')
