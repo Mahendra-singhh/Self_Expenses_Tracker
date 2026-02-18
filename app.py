@@ -10,6 +10,13 @@ app.secret_key = 'my secret key'
 
 db = SQLAlchemy(app)
 
+class Expense(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    name=db.Column(db.String,nullable=False)
+    amount=db.Column(db.Integer,nullable=False)
+    user=db.Column(db.String,nullable=False)
+    
+
 
 @app.context_processor
 def inject_user():
@@ -68,24 +75,38 @@ def sign_in():
         email=request.form.get('email')
     return render_template('sigin.html')
 
-@app.route('/Expense',methods=['GET','POST'])
+with app.app_context():
+    db.create_all()
+
+@app.route('/expense',methods=['GET','POST'])
 @login_required
-def Expense():
-    
-        
+def expense():
     if request.method=='POST':
-        expense=request.form.get('expense')
+        name=request.form.get('expense')
         amount=request.form.get('amount')
+        
+        if not name:
+            flash("Expense must be a number")
+            return redirect(url_for('expense'))
+        
         try:
             amount=int(amount)
         except ValueError:
-            flash("Amount must be a number")
-            return redirect(url_for('Expense'))
-        expenses={"name":expense,"price":amount}
+            flash("Amount must be in number")
+            return redirect(url_for('expense'))
         
-        return expenses
-   
-    return render_template('Expense.html',expenses)
+        new_expense=Expense(
+            name=name,
+            amount=amount,
+            user=session['user']
+        )
+        db.session.add(new_expense)
+        db.session.commit()
+        return redirect(url_for('expense'))
+    
+    expenses = Expense.query.filter_by(user=session['user']).all()
+    return render_template("Expense.html", expenses=expenses)
+    
     
 
 if __name__ == '__main__':
