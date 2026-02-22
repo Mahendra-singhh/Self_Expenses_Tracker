@@ -22,7 +22,7 @@
     <input type="email" class="form-control" id="exampleInputEmail1" name="email"aria-describedby="emailHelp">
     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(category_filter=["login_error"]) %}
   {% if messages %}
     <ul class="alert alert-warning">
       {% for msg in messages %}

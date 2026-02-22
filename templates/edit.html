@@ -1,0 +1,33 @@
+    {% extends 'profile.html' %}
+    {% block body %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <div class ="edit">
+    <h2 >Edit Tab</h2>
+    </div>
+    <div class="Big">
+    <div class="expense">
+        <form method="POST">  
+             {% if expensesa%}
+    {%for expense in expensesa%}
+
+      <input type="hidden" name="expense_id" value="{{ expense.id }}">
+        <div class="form-group">
+            <label for="expenseInput">Enter Expense</label>
+           
+            <input type="text" name="expense" class="form-control" id="expenseInput" value="{{expense.name }}">
+        </div>
+            <div class="form-group">
+            <label for="amountInput">₹ Amount</label>
+            <input type="text" name="amount" class="form-control" id="amountInput" value="{{expense.amount }}">
+        </div>
+        {%endfor%}
+        {%endif%}
+        <div class="editbu">
+        <button type="Save" class="btn btn-primary">Save</button>
+        <button type="Delete"name="Delete" class="btn btn-primary">Delete</button>
+        </div> 
+        </form>
+    </div>
+    </div>
+    {% endblock body %}
