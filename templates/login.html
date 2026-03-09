@@ -16,19 +16,20 @@
     <div class="log"><div class="formal">
  <h2>Login</h2>
 </div>
-  <form method="POST",action="/login">
+
+<form method="POST" action="/login">
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
     <input type="email" class="form-control" id="exampleInputEmail1" name="email"aria-describedby="emailHelp">
     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
-    {% with messages = get_flashed_messages(category_filter=["login_error"]) %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-    <ul class="alert alert-warning">
-      {% for msg in messages %}
-        <li>{{ msg }}</li>
-      {% endfor %}
-    </ul>
+    {% for category, msg in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ msg }}
+      </div>
+    {% endfor %}
   {% endif %}
 {% endwith %}
   <div class="form-group">

@@ -1,0 +1,37 @@
+{% extends "profile.html" %}
+{%block body%}
+
+{% for  expense in Expense  %}
+<table>
+    <thead>
+        <tr>
+        <th>#</th>
+        <th>Expense</th>
+        <th>Amount</th>
+        </tr>        
+    </thead>
+    <tbody>
+        <tr>
+        <td>{{loop.index}}</td>
+        <td>{{expense.name}}</td>
+        <td>{{expense.amount}}</td>
+        <td><button type="submit"></td>
+
+
+</table>
+{% with messages=get_flashed_messages(with_categories=True) %}
+{%for message in messages%}
+{%for category,message in messages%}
+<div class="alert alert-{{category}}">
+  {{message}}
+</div>
+{% endfor %}
+{%endfor%}
+{% endwith %}
+{% endfor %}
+
+
+
+
+
+{%endblock%}

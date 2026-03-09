@@ -7,14 +7,16 @@
         <label for="expenseInput">Enter Expense</label>
         <input type="text" name="expense" class="form-control" id="expenseInput">
       </div>
-      {%with messages = get_flashed_messages()%}
-        {%if messages%}
-          {%for messages in messages%}
-            <div class="alert alert-danger">
-              {{messages}}
-          {%endfor%}
-        {%endif%}
-      {%endwith%}
+    
+      {% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
       <div class="form-group">
         <label for="amountInput">₹ Amount</label>
@@ -39,7 +41,8 @@
         <th scope="row">{{ loop.index }}</th>
         <td>{{ expense.name }}</td>
         <td>{{ expense.amount }}</td>
-        <td><a href="{{url_for('edit')}}" name="">Edit</a></td>
+        <td><a href="{{url_for('edit',id=expense.id)}}" class= "btn"  name="">Edit</a>
+        <a href="{{url_for('delete',id=expense.id)}}" class="btn " name="Delete">Delete</a></td>
       </tr>
       {% endfor %}
       </tbody>

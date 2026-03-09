@@ -1,33 +1,27 @@
-    {% extends 'profile.html' %}
-    {% block body %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% extends 'profile.html'%}
+{% block body %}
+<div class="edit">
+<form method="POST">
 
-    <div class ="edit">
-    <h2 >Edit Tab</h2>
-    </div>
-    <div class="Big">
-    <div class="expense">
-        <form method="POST">  
-             {% if expensesa%}
-    {%for expense in expensesa%}
+<label>Expense</label>
+<input type="text" name="expense" value="{{ expense.name }}">
 
-      <input type="hidden" name="expense_id" value="{{ expense.id }}">
-        <div class="form-group">
-            <label for="expenseInput">Enter Expense</label>
-           
-            <input type="text" name="expense" class="form-control" id="expenseInput" value="{{expense.name }}">
-        </div>
-            <div class="form-group">
-            <label for="amountInput">₹ Amount</label>
-            <input type="text" name="amount" class="form-control" id="amountInput" value="{{expense.amount }}">
-        </div>
-        {%endfor%}
-        {%endif%}
-        <div class="editbu">
-        <button type="Save" class="btn btn-primary">Save</button>
-        <button type="Delete"name="Delete" class="btn btn-primary">Delete</button>
-        </div> 
-        </form>
-    </div>
-    </div>
-    {% endblock body %}
+<label>Amount</label>
+<input type="text" name="amount" value="{{ expense.amount }}">
+
+<button type="submit" class="btn btn-success">Save</button>
+<button type="submit" class="btn btn-danger">Delete</div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, messag in messages%}
+      <div class="alert alert-{{ category }}">
+        {{ messag }}
+      </div>
+      {%endfor%}
+  {% endif %}
+{% endwith %}
+
+</form>
+</div>
+
+{% endblock %}
