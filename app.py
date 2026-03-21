@@ -3,7 +3,7 @@ from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail,Message 
 from werkzeug.security import generate_password_hash,check_password_hash
-import os
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///stu.db"
@@ -17,6 +17,7 @@ class Expense(db.Model):
     name=db.Column(db.String,nullable=False)
     amount=db.Column(db.Float,nullable=False)
     user=db.Column(db.String,nullable=False)
+    date_time=db.Column(db.String,nullable=False)
     
 #User-Schema
 class User(db.Model):
@@ -24,6 +25,7 @@ class User(db.Model):
     email=db.Column(db.String,nullable=False,unique=True)
     username=db.Column(db.String,nullable=False)
     password=db.Column(db.String,nullable=False)
+    budget=db.Column(db.String,nullable=True)
     
     
 
@@ -100,7 +102,8 @@ def sign_in():
         new_user=User(
             email=email,
             password=hashed_password,
-            username=username,         
+            username=username,  
+              
         )
         db.session.add(new_user)
         print("BEFORE COMMIT")
@@ -109,7 +112,7 @@ def sign_in():
         print(new_user.user_id)
         flash("Account creation successfull","success")
         
-        return redirect(url_for('sign_in'))
+        return redirect(url_for('login'))
         
     return render_template('sigin.html')
 
@@ -170,7 +173,8 @@ def expense():
         new_expense=Expense(
             name=name,
             amount=amount,
-            user=session['user']
+            user=session['user'],
+            date_time=datetime.now()
         )
         #adding-expense
         db.session.add(new_expense)
@@ -179,11 +183,37 @@ def expense():
         return redirect(url_for('expense'))
 
     
-    expenses = Expense.query.filter_by(user=session['user']).all()
-    return render_template("Expense.html", expenses=expenses)
+    expenses = Expense.query.filter_by(user=session['user']).order_by(Expense.id.desc()).all()
+    total=sum(exp.amount for exp in expenses)
+    user=User.query.filter_by(username=session['user']).first()
+    
+    budget=float(total)-float(user.budget)
+    return render_template("Expense.html", expenses=expenses,total=total,budget=budget)
+
+from flask import request, redirect, url_for, flash
+
+@app.route('/budget', methods=['POST'])
+def budget():
+    amount = request.form.get('budget')
+    if  not amount:
+        flash("Please Enter Budget")
+        return redirect(url_for(expense))
+    
+    try:
+        amount=float(amount)
+    except:
+        flash("Budget must be in numbers")
+        return redirect(url_for('expense'))
+    
+    user=User.query.filter_by(username=session['user']).first()
+    user.budget=amount
+    db.session.commit()
+    print("Budget:", amount)
+    flash("Budget set successfully", "success")
+    return redirect(url_for('expense'))
     
     
-@app.route('/delete/<int:id>', methods=["POST"])
+@app.route('/delete/<int:id>', methods=["POST","GET"])
 @login_required
 def delete(id):
     expense=Expense.query.get_or_404(id)
@@ -206,4 +236,4 @@ with app.app_context():
     
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0" ,port=5000)
+    app.run(debug=True,host="0.0.0.0" ,port=5000)

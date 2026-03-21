@@ -1,7 +1,9 @@
 {% extends 'profile.html'%}
 {% block body %}
+
 <div class="edit">
-<form method="POST">
+
+<form action="{{ url_for('edit', id=expense.id) }}" method="POST">
 
 <label>Expense</label>
 <input type="text" name="expense" value="{{ expense.name }}">
@@ -10,18 +12,23 @@
 <input type="text" name="amount" value="{{ expense.amount }}">
 
 <button type="submit" class="btn btn-success">Save</button>
-<button type="submit" class="btn btn-danger">Delete</div>
-  {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, messag in messages%}
-      <div class="alert alert-{{ category }}">
-        {{ messag }}
-      </div>
-      {%endfor%}
-  {% endif %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}">
+{{ message }}
+</div>
+{% endfor %}
+{% endif %}
 {% endwith %}
 
 </form>
+
+<form action="{{ url_for('delete', id=expense.id) }}" method="POST">
+<button type="submit" class="btn btn-danger">Delete</button>
+</form>
+
 </div>
 
 {% endblock %}
