@@ -25,7 +25,7 @@ class User(db.Model):
     email=db.Column(db.String,nullable=False,unique=True)
     username=db.Column(db.String,nullable=False)
     password=db.Column(db.String,nullable=False)
-    budget=db.Column(db.String,nullable=True)
+    budget=db.Column(db.Float,nullable=True)
     
     
 
@@ -186,8 +186,8 @@ def expense():
     expenses = Expense.query.filter_by(user=session['user']).order_by(Expense.id.desc()).all()
     total=sum(exp.amount for exp in expenses)
     user=User.query.filter_by(username=session['user']).first()
-    
-    budget=float(total)-float(user.budget)
+    user_budget=float(user.budget)if user.budget else 0
+    budget=float(total)-(user_budget)
     return render_template("Expense.html", expenses=expenses,total=total,budget=budget)
 
 from flask import request, redirect, url_for, flash
