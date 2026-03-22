@@ -54,7 +54,7 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        remember=request.fom.get('login-check')
+        remember=request.form.get('login-check')
         if password=="":
             flash("Plese enter password")
             return(redirect(url_for('login')))
@@ -191,8 +191,9 @@ def expense():
     total=sum(exp.amount for exp in expenses)
     user=User.query.filter_by(username=session['user']).first()
     user_budget=float(user.budget)if user.budget else 0
-    budget=float(total)-(user_budget)
-    return render_template("Expense.html", expenses=expenses,total=total,budget=budget)
+
+    remaining=(user_budget)-float(total)
+    return render_template("Expense.html", expenses=expenses,total=total,remaining=remaining,user_budget=user_budget)
 
 from flask import request, redirect, url_for, flash
 

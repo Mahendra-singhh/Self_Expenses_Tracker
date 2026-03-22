@@ -96,6 +96,19 @@
 
    
 }
+.in-budget{
+    color: white;
+background-color: green;
+}
+.out-budget{
+    color: rgb(255, 255, 255);
+    background-color: red;
+}
+.budget{
+    padding: 50px;
+    margin: 25px;
+    border: 2px dotted;
+}
 .dash{
     display: flex;
     width: 80%;

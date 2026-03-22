@@ -25,8 +25,15 @@
         </form>
     </div>
   </div>
-  <div>Total Budget{{total}}</div>
-  <div>Remaining Budget-{{budget}}</div>
+  <div class="budget">Total Budget= {{user_budget}}
+    {%if remaining<0%}
+    <div class="out-budget">
+  Remaining Budget= {{remaining}}</div>
+  {%else%}
+   <div class="in-budget">
+  Remaining Budget= {{remaining}}</div>
+  {%endif%}
+   </div>
   
   {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
