@@ -34,6 +34,10 @@
     align-items:center;
     box-shadow:0px 4px 10px rgba(0,0,0,0.3);
 }
+.signdata{
+    width: 100%;
+
+}
 
         .box{
             color: white;
@@ -56,6 +60,13 @@
 }
 .formal a{
     margin-left: -30px;
+    color: black;
+}
+.no-style{
+    text-decoration: none;
+}
+.no-style a{
+    margin-left: -10px;
     color: black;
 }
 .expense{
@@ -117,3 +128,4 @@
     height: 37px;
      border-radius: 5px;
 }
+

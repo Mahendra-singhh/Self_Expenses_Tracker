@@ -22,7 +22,7 @@
 {%endfor%}
 {% endwith %}
 
-
+<div class="signdata">
   <form method='POST'>
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
@@ -36,5 +36,8 @@
   
   <button type="submit" class="btn btn-primary">Create Account</button>
 </form>
+<div class="no-style">
+<a href="{{url_for('login')}}">Already registered return to Login</a>
+</div>
 </div>
 </body>

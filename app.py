@@ -54,12 +54,16 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+        remember=request.fom.get('login-check')
         if password=="":
             flash("Plese enter password")
             return(redirect(url_for('login')))
 
         if email=="":
             flash("Please enter email")
+            return(redirect(url_for('login')))
+        if not remember:
+            flash("Please accept terms")
             return(redirect(url_for('login')))
         
         user = User.query.filter_by(email=email).first()
