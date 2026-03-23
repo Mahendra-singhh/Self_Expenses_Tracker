@@ -81,6 +81,7 @@ def profile():
     return render_template('profile.html')
 #logout button
 @app.route('/logout')
+@login_required
 def logout():
     session.pop('user',None)
     return (redirect(url_for('login'))) 
@@ -198,6 +199,7 @@ def expense():
 from flask import request, redirect, url_for, flash
 
 @app.route('/budget', methods=['POST'])
+@login_required
 def budget():
     amount = request.form.get('budget')
     if  not amount:
