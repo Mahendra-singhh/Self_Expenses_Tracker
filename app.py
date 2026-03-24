@@ -233,6 +233,11 @@ def delete(id):
 
     flash("Expense deleted succesfully","success")
     return redirect(url_for('expense'))    
+
+@app.route('/loans',methods=["POST","GET"])
+@login_required
+def loans():
+    return render_template('loans.html')
               
     
     
