@@ -69,7 +69,16 @@
     margin-left: -10px;
     color: black;
 }
-.expense{
+/* 
+.expense */
+.expense-list{
+    width: 91%;
+    margin: auto;
+      box-shadow:0px 4px 10px 5px rgba(141, 237, 7, 0.3);
+       border-radius:15px;
+
+}
+.expense{   
    
     padding: 50px;
     top: 150px;
@@ -84,6 +93,8 @@
     display: flex;
     width: 90%;
     margin: auto;
+    gap: 15px;
+    margin-top: 50px;
 }
 .expense button{
     
@@ -97,15 +108,15 @@
    
 }
 .in-budget{
-    color: white;
-background-color: green;
+    background-color:rgb(245, 245, 245);
+color: green;
 }
 .out-budget{
-    color: rgb(255, 255, 255);
-    background-color: red;
+    color: rgb(246, 5, 5);
+    background-color: rgb(245, 245, 245);
 }
 .budget{
-    padding: 50px;
+    padding: 0px;
     margin: 25px;
     border: 2px dotted;
 }
@@ -142,3 +153,165 @@ background-color: green;
      border-radius: 5px;
 }
 
+/* set budget in expense */
+.form-group{
+    display: flex;
+    gap: 10px   ;
+    
+}
+.budget-input{
+    width: 80%;
+   
+
+}
+.budget-button{
+    display: inline;
+    width: 11%;
+}
+
+.Big {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.expense {
+    flex: 1;
+    min-width: 300px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Budget input + button in one row */
+.budget-row {
+    display: flex;
+    gap: 10px;
+}
+
+.budget-row input {
+    flex: 3;
+}
+
+.budget-row button {
+    flex: 1;
+}
+
+/* Budget colors */
+.out-budget {
+    color: red;
+    font-weight: bold;
+}
+
+.in-budget {
+    color: green;
+    font-weight: bold;
+}
+
+/* newonws */
+/* Better spacing */
+body {
+    background-color: #f5f7fa;
+}
+
+/* Navbar tweak */
+.navbar {
+    padding: 10px 20px;
+}
+
+/* Content card feel */
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Mobile improvements */
+@media (max-width: 768px) {
+    
+    .navbar .d-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+}
+@media (max-width: 768px) {
+
+    .Big {
+        flex-direction: column;
+    }
+
+    .budget-row {
+        flex-direction: column;
+    }
+
+    .budget-row button {
+        width: 100%;
+    }
+
+    .form-control {
+        width: 100%;
+    }
+
+    table {
+        font-size: 12px;
+    }
+}
+/* edit page */
+/* Center the edit page */
+.edit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* Card design */
+.edit-card {
+    width: 400px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Inputs spacing */
+.edit-card input {
+    padding: 10px;
+}
+
+/* Buttons spacing */
+.edit-card button {
+    padding: 10px;
+}
+
+/* Hover effect */
+.edit-card:hover {
+    transform: translateY(-3px);
+    transition: 0.3s;
+}
+/* emipage */
+.emi-card {
+    max-width: 450px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.result-box {
+    background: #e9f7ef;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: green;
+}

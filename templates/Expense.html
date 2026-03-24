@@ -1,39 +1,43 @@
   {% extends 'profile.html' %}
   {% block body %}
   <div class="Big">
-    <div class="expense">
-      <form method="POST">  
-        <div class="form-group">
-          <label for="expenseInput">Enter Expense</label>
-          <input type="text" name="expense" class="form-control" id="expenseInput">
-        </div>
-      
-      
 
-        <div class="form-group">
-          <label for="amountInput">₹ Amount</label>
-          <input type="text" name="amount" class="form-control" id="amountInput">
-        </div>
-        <button type="submit" class="btn btn-primary">Add Expense</button>
-      </form>
-      <form action="{{url_for('budget')}}" method="POST">  
+  <!-- Expense Form -->
+  <div class="expense">
+    <form method="POST">
       <div class="form-group">
-          <label for="budget">₹ Set budget</label>
-          <input type="text" name="budget" class="form-control" id="budget">
-        </div>
-        <button href={{url_for('budget')}}type="submit" class="btn btn-primary">Set Budget</button>
-        </form>
-    </div>
+        <label>Enter Expense</label>
+        <input type="text" name="expense" class="form-control">
+
+        <label>₹ Amount</label>
+        <input type="text" name="amount" class="form-control">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Expense</button>
+    </form>
   </div>
-  <div class="budget">Total Budget= {{user_budget}}
-    {%if remaining<0%}
-    <div class="out-budget">
-  Remaining Budget= {{remaining}}</div>
-  {%else%}
-   <div class="in-budget">
-  Remaining Budget= {{remaining}}</div>
-  {%endif%}
-   </div>
+
+  <!-- Budget Form -->
+  <div class="expense">
+    <form action="{{url_for('budget')}}" method="POST">
+      <div class="form-group budget-row">
+        <input type="text" name="budget" class="form-control budget-input" placeholder="₹ Set Budget">
+        <button type="submit" class="btn btn-primary">Set Budget</button>
+      </div>
+    </form>
+
+    <br>
+    <b>Total Budget:</b> {{user_budget}}
+
+    {% if remaining < 0 %}
+      <div class="out-budget">Remaining Budget = {{remaining}}</div>
+    {% else %}
+      <div class="in-budget">Remaining Budget = {{remaining}}</div>
+    {% endif %}
+  </div>
+
+</div>
+
   
   {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
@@ -44,6 +48,7 @@
       {% endfor %}
     {% endif %}
   {% endwith %}
+  <div class="expense-list">
   <div class="container mt-4">
     <table class="table mt-4">
       <thead>
@@ -75,4 +80,5 @@
     </table>
   </div>
   </div>
+</div>
   {% endblock body %}

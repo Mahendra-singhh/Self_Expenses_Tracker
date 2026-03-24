@@ -1,4 +1,41 @@
 {% extends 'profile.html' %}
 {% block body %}
-<p>This is a emi page</p>
-{% endblock body  %}
+
+<div class="container mt-4">
+
+  <div class="emi-card">
+
+    <h4 class="mb-3">💳 EMI Calculator</h4>
+
+    <form method="POST">
+
+      <div class="mb-3">
+        <label class="form-label">Loan Amount (₹)</label>
+        <input type="number" name="principal" class="form-control" placeholder="Enter amount">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Interest Rate (%)</label>
+        <input type="number" name="rate" class="form-control" placeholder="e.g. 8.5">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Time (months)</label>
+        <input type="number" name="time" class="form-control" placeholder="e.g. 12">
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Calculate EMI</button>
+
+    </form>
+
+    {% if emi %}
+    <div class="result-box mt-4">
+      <h5>Monthly EMI: ₹ {{ emi }}</h5>
+    </div>
+    {% endif %}
+
+  </div>
+
+</div>
+
+{% endblock body %}
