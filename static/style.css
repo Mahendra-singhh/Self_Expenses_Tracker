@@ -315,3 +315,21 @@ body {
     font-weight: bold;
     color: green;
 }
+.loan  a{
+    color: black;
+    text-decoration: none;
+
+}
+.select-input{
+    padding: 8px;
+    border: #ced3d0 1px solid;
+    border-radius: 8px;
+}
+.Two{
+    display:flex;
+    justify-content: space-between
+
+}
+.Two input{
+    width: 100%;
+}

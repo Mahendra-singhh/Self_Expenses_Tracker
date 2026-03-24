@@ -26,6 +26,15 @@ class User(db.Model):
     username=db.Column(db.String,nullable=False)
     password=db.Column(db.String,nullable=False)
     budget=db.Column(db.Float,nullable=True)
+
+
+#Loan Schema 
+class Loans(db.Model):
+      id = db.Column(db.Integer, primary_key=True)
+      loan_type=db.Column(db.String,nullable=False)
+      amount=db.Column(db.Integer,nullable=False)
+      monthly=db.Column(db.String,nullable=False)
+      duration=db.Column(db.String,nullable=False)     
     
     
 
@@ -237,6 +246,22 @@ def delete(id):
 @app.route('/loans',methods=["POST","GET"])
 @login_required
 def loans():
+    if request.method=="POST":
+        loan_type=request.form.get('loan')
+        amount=request.form.get('amount')
+        monthly=request.form.get('monthly')
+        duration=request.form.get('duration')
+        
+        new_loan=Loans(
+            loan_type=loan_type,
+            amount=amount,
+            monthly=monthly,
+            duration=duration
+        )
+        db.session.add(new_loan)
+        db.session.commit()
+        return redirect(url_for('loans'))
+        
     return render_template('loans.html')
               
     

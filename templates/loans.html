@@ -1,4 +1,33 @@
  {% extends 'profile.html' %}
   {% block body %}
   
+  <div class="loan">
+   <a href="">My Loans</a>
+    <form>
+  <div class="form-group">
+    <label for="course">Loan:</label>
+
+<select class="select-input" id="course"  name="loan">
+  <option value="home">Home-Loan</option>
+  <option value="car">Car-Loan</option>
+  <option value="person">Personal-Loan</option>
+    <option value="misc">Misclenious</option>
+</select>
+<form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Amount</label>
+    <input type="text" name="amount"class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Amount">
+ <div class="Two">
+  <div class="form-group">
+    <label for="exampleInputPass   word1">Monthly EMI</label>
+    <input type="number" name="monthly"class="form-control" id="exampleInputPassword1" placeholder="Emi">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPass   word1">Duration</label>
+    <input type="date" name="duration"class="form-control" id="exampleInputPassword1" placeholder="Emi">
+  </div>
+</div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
   {%endblock body%}
