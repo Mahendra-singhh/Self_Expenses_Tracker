@@ -1,10 +1,9 @@
  {% extends 'profile.html' %}
-  {% block body %}
+ {% block body %}
   
-  <div class="loan">
+<div class="loan">
    <a href="">My Loans</a>
-    
-   <form methods=["POST","GET"]>
+ <form method="POST" action='/loans'>
   <div class="form-group">
     <label for="course">Loan:</label>
 
@@ -12,10 +11,11 @@
   <option value="home">Home-Loan</option>
   <option value="car">Car-Loan</option>
   <option value="person">Personal-Loan</option>
-    <option value="misc">Misclenious</option>
+    <option value="misc">Miscellaneous</option>
 </select>
-</form>
-<form methods=["POST","GET"]>
+</div>
+
+
   <div class="form-group">
     <label for="exampleInputEmail1">Amount</label>
     <input type="text" name="amount"class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Amount">
@@ -32,4 +32,48 @@
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 </div>
+{% with messages =get_flashed_messages(with_categories=true) %}
+{%if messages%}
+{% for  category,ms in messages  %}
+<div class="alert alert-{{category}}">
+  {{ms}}
+</div>
+{% endfor %}
+{%endif%}
+{% endwith %}
+{%if loans%}
+
+
+<table>
+  <thead>
+  <tr>
+    <td>#</td>
+    <td>Loan Type</td>
+    <td>Loam Amount</td>
+    <td>Monthly Emi</td>
+    <td>Duration</td>
+  </tr>
+</thead>
+<tbody>
+{%for loan in loans%}
+  <tr>
+    <td>{{loop.index}}</td>
+    <td>{{loan.loan_type}}</td>
+    <td>{{loan.amount}}</td>
+    <td>{{loan.duration}}</td>
+    <td></td>
+  </tr>
+  {%endfor%}
+  </tbody>
+    {%else%}
+    NO Active loans
+    {%endif%}
+
+  
+
+
+
+
+
+
   {%endblock body%}

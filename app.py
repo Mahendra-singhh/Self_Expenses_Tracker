@@ -255,16 +255,16 @@ def loans():
         duration=request.form.get('duration')
         
         if not loan_type:
-            flash("Enter loan type")
+            flash("Enter loan type","danger")
             return redirect(url_for('loans'))
         if not amount:
-            flash("Enter loan amount")
+            flash("Enter loan amount","danger")
             return redirect(url_for('loans'))
         if not monthly:
-            flash("Enter monthly emi ")
+            flash("Enter monthly emi ","danger")
             return redirect(url_for('loans'))
         if not duration:
-            flash("Enter loan duration")
+            flash("Enter loan duration","danger")
             return redirect(url_for('loans'))
         
         new_loan=Loans(
@@ -275,10 +275,11 @@ def loans():
         )
         db.session.add(new_loan)
         db.session.commit()
-        print(new_loan.duration)
+        flash("after commit","success")
         return redirect(url_for('loans'))
+    loans=User.query.filter_by(username=session['user']).all() 
         
-    return render_template('loans.html')
+    return render_template('loans.html',loans=loans)
               
     
     
