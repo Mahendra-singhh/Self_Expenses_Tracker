@@ -97,12 +97,14 @@ def logout():
 
 
 #emi page
-@app.route('/emi')
+@app.route('/emi',methods=["POST","GET"])
 @login_required
 def emi():
+    
     return render_template('emi.html') 
-@app.route('/signin',methods=['GET','POST'])
 
+
+@app.route('/signin',methods=['GET','POST'])
 #sign-in page
 def sign_in():
     if request.method=='POST':
@@ -229,7 +231,7 @@ def budget():
     return redirect(url_for('expense'))
     
     
-@app.route('/delete/<int:id>', methods=["POST","GET"])
+@app.route('/delete/<int:id>', methods=['POST','GET'])
 @login_required
 def delete(id):
     expense=Expense.query.get_or_404(id)
@@ -243,7 +245,7 @@ def delete(id):
     flash("Expense deleted succesfully","success")
     return redirect(url_for('expense'))    
 
-@app.route('/loans',methods=["POST","GET"])
+@app.route('/loans',methods=['POST','GET'])
 @login_required
 def loans():
     if request.method=="POST":
@@ -251,6 +253,19 @@ def loans():
         amount=request.form.get('amount')
         monthly=request.form.get('monthly')
         duration=request.form.get('duration')
+        
+        if not loan_type:
+            flash("Enter loan type")
+            return redirect(url_for('loans'))
+        if not amount:
+            flash("Enter loan amount")
+            return redirect(url_for('loans'))
+        if not monthly:
+            flash("Enter monthly emi ")
+            return redirect(url_for('loans'))
+        if not duration:
+            flash("Enter loan duration")
+            return redirect(url_for('loans'))
         
         new_loan=Loans(
             loan_type=loan_type,
@@ -260,6 +275,7 @@ def loans():
         )
         db.session.add(new_loan)
         db.session.commit()
+        print(new_loan.duration)
         return redirect(url_for('loans'))
         
     return render_template('loans.html')
