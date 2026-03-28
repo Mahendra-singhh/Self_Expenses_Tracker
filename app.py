@@ -31,6 +31,7 @@ class User(db.Model):
 #Loan Schema 
 class Loans(db.Model):
       id = db.Column(db.Integer, primary_key=True)
+      user=db.Column(db.String,nullable=False)
       loan_type=db.Column(db.String,nullable=False)
       amount=db.Column(db.Integer,nullable=False)
       monthly=db.Column(db.String,nullable=False)
@@ -271,13 +272,14 @@ def loans():
             loan_type=loan_type,
             amount=amount,
             monthly=monthly,
-            duration=duration
+            duration=duration,
+            user=session['user']
         )
         db.session.add(new_loan)
         db.session.commit()
         flash("after commit","success")
         return redirect(url_for('loans'))
-    loans=User.query.filter_by(username=session['user']).all() 
+    loans=Loans.query.filter_by(user=session['user']).all() 
         
     return render_template('loans.html',loans=loans)
               
