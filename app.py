@@ -215,8 +215,8 @@ from flask import request, redirect, url_for, flash
 def budget():
     amount = request.form.get('budget')
     if  not amount:
-        flash("Please Enter Budget")
-        return redirect(url_for(expense))
+        flash("Please Enter Budget",'danger')
+        return redirect(url_for('expense'))
     
     try:
         amount=float(amount)
@@ -268,11 +268,15 @@ def loans():
             flash("Enter loan duration","danger")
             return redirect(url_for('loans'))
         
+        
+        time2=datetime.now()
+        time_left=duration-time2
+        
         new_loan=Loans(
             loan_type=loan_type,
             amount=amount,
             monthly=monthly,
-            duration=duration,
+            duration=time_left,
             user=session['user']
         )
         db.session.add(new_loan)
