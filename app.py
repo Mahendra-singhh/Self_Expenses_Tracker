@@ -101,8 +101,27 @@ def logout():
 @app.route('/emi',methods=["POST","GET"])
 @login_required
 def emi():
-    
-    return render_template('emi.html') 
+    if request.method=="POST":
+        pr=request.form.get('principal')
+        rate=request.form.get('rate')
+        time=request.form.get('time')
+        if not pr:
+            flash("Please enter principal amount","danger")
+            return redirect(url_for('emi'))
+        if not rate:
+            flash("Please enter rate of interest","danger")
+            return redirect(url_for('emi'))
+        if not time:
+            flash("Please enter time duration of loan","danger")
+            return redirect(url_for('emi'))
+        fpr=float(pr)
+        frate=float(rate)
+        ftime=float(time)
+         
+        final=fpr*(1+frate/100)**ftime 
+        emi=final/ftime       
+        
+    return render_template('emi.html',emi=emi) 
 
 
 @app.route('/signin',methods=['GET','POST'])
