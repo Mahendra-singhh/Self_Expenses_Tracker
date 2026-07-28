@@ -20,7 +20,7 @@
 <form method="POST" action="/login">
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" name="email"aria-describedby="emailHelp">
+    <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -34,7 +34,7 @@
 {% endwith %}
   <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
-    <input type="password" name="password"class="form-control" id="exampleInputPassword1">
+    <input type="password" name="Password"class="form-control" id="exampleInputPassword1">
   </div>
   <div class="form-group form-check">
     <input type="checkbox" name="login-check" class="form-check-input" id="exampleCheck1">
