@@ -1,84 +1,161 @@
-  {% extends 'profile.html' %}
-  {% block body %}
-  <div class="Big">
+{% extends 'base.html' %}
+{% block body %}
 
-  <!-- Expense Form -->
-  <div class="expense">
-    <form method="POST">
-      <div class="form-group">
-        <label>Enter Expense</label>
-        <input type="text" name="expense" class="form-control">
+<div class="row g-4">
 
-        <label>₹ Amount</label>
-        <input type="text" name="amount" class="form-control">
-      </div>
+  <!-- 🔹 Left Column: Log Operational Expense Form -->
+  <div class="col-md-7">
+    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white">
+      <h5 class="fw-bold text-dark mb-3">
+        <i class="bi bi-plus-circle text-primary me-2"></i>Log Operational Expense
+      </h5>
+      
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label small fw-semibold text-secondary">Expense Description / Vendor</label>
+          <input type="text" name="expense" class="form-control" placeholder="e.g. Shop Rent, Staff Wages, Inventory, Electricity" required>
+        </div>
 
-      <button type="submit" class="btn btn-primary">Add Expense</button>
-    </form>
+        <div class="row g-2 mb-3">
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-secondary">Category</label>
+            <select class="form-select" name="category">
+              <option value="Operational">Operational / Maintenance</option>
+              <option value="Rent">Rent & Real Estate</option>
+              <option value="Payroll">Staff Salary / Payroll</option>
+              <option value="Inventory">Inventory & Supplies</option>
+              <option value="Utilities">Utilities (Electricity/Water)</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-secondary">Payment Mode</label>
+            <select class="form-select" name="payment_mode">
+              <option value="UPI">UPI / QR Code</option>
+              <option value="Bank Transfer">Bank Transfer / NEFT</option>
+              <option value="Cash">Cash Ledger</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label small fw-semibold text-secondary">Amount (₹)</label>
+          <input type="text" name="amount" class="form-control" placeholder="e.g. 5000" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm">
+          <i class="bi bi-check2-circle me-1"></i> Record Business Expense
+        </button>
+      </form>
+    </div>
   </div>
 
-  <!-- Budget Form -->
-  <div class="expense">
-    <form action="{{url_for('budget')}}" method="POST">
-      <div class="form-group budget-row">
-        <input type="text" name="budget" class="form-control budget-input" placeholder="₹ Set Budget">
-        <button type="submit" class="btn btn-primary">Set Budget</button>
+  <!-- 🔹 Right Column: Monthly Budget & Expense Cap -->
+  <div class="col-md-5">
+    <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100 d-flex flex-column justify-content-between">
+      <div>
+        <h5 class="fw-bold text-dark mb-3">
+          <i class="bi bi-speedometer2 text-warning me-2"></i>Monthly Operational Cap
+        </h5>
+
+        <form action="{{url_for('budget')}}" method="POST" class="mb-3">
+          <div class="input-group">
+            <input type="text" name="budget" class="form-control" placeholder="₹ Set Monthly Limit">
+            <button type="submit" class="btn btn-outline-primary fw-semibold">Set Cap</button>
+          </div>
+        </form>
+
+        <div class="bg-light p-3 rounded-3 mb-3 border">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <small class="text-muted fw-semibold">TOTAL ALLOCATED CAP:</small>
+            <span class="fw-bold text-dark">₹ {{ user_budget if user_budget else '0.00' }}</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted fw-semibold">REMAINING LIQUIDITY:</small>
+            {% if remaining is defined and remaining < 0 %}
+              <span class="badge bg-danger fs-6">Over Budget: ₹ {{ remaining }}</span>
+            {% else %}
+              <span class="badge bg-success fs-6">Remaining: ₹ {{ remaining if remaining is defined else '0.00' }}</span>
+            {% endif %}
+          </div>
+        </div>
       </div>
-    </form>
 
-    <br>
-    <b>Total Budget:</b> {{user_budget}}
-
-    {% if remaining < 0 %}
-      <div class="out-budget">Remaining Budget = {{remaining}}</div>
-    {% else %}
-      <div class="in-budget">Remaining Budget = {{remaining}}</div>
-    {% endif %}
+      <div class="alert alert-info small mb-0 py-2">
+        <i class="bi bi-shield-check me-1"></i>
+        <strong>B2B Note:</strong> Outflow calculations are cached for monthly tax & audit reporting.
+      </div>
+    </div>
   </div>
 
 </div>
 
-  
-  {% with messages = get_flashed_messages(with_categories=True) %}
-    {% if messages %}
+<!-- 🔹 Flash Messages Zone -->
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    <div class="mt-4">
       {% for category, message in messages %}
-        <div class="alert alert-{{category}}">
+        <div class="alert alert-{{category}} alert-dismissible fade show py-2 px-3 small" role="alert">
           {{ message }}
+          <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
       {% endfor %}
-    {% endif %}
-  {% endwith %}
-  <div class="expense-list">
-  <div class="container mt-4">
-    <table class="table mt-4">
-      <thead>
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- 🔹 Bottom Table: Logged Operational Expenses -->
+<div class="card border-0 shadow-sm rounded-3 p-4 bg-white mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold text-dark mb-0">
+      <i class="bi bi-receipt me-2 text-secondary"></i>Operational Expenses Ledger
+    </h5>
+    <span class="badge bg-dark">Total Entries: {{ expenses|length if expenses else 0 }}</span>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-dark">
         <tr>
-          <th>#</th>
-          <th>Expense</th>
-          <th>Amount</th>
-          <th>Date & Time</th>
+          <th scope="col">#</th>
+          <th scope="col">Expense / Vendor</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Date & Time</th>
+          <th scope="col" class="text-end">Actions</th>
         </tr>
       </thead>
       
-      {%if expenses %}
+      {% if expenses %}
       <tbody>
         {% for expense in expenses %}
-        
         <tr>
           <th scope="row">{{ loop.index }}</th>
-          <td>{{ expense.name }}</td>
-          <td>{{ expense.amount }}</td>
-          <td>{{expense.date_time}}</td>
-          <td><a href="{{url_for('edit',id=expense.id)}}" class= "btn btn-warning btn-sm"  name="">Edit</a>
-          <td><a href="{{url_for('delete',id=expense.id)}}" class="btn btn-danger btn-sm" name="Delete">Delete</a></td>
+          <td class="fw-semibold text-dark">{{ expense.name }}</td>
+          <td class="text-danger fw-bold">₹ {{ expense.amount }}</td>
+          <td class="text-muted small">{{ expense.date_time }}</td>
+          <td class="text-end">
+            <a href="{{url_for('edit', id=expense.id)}}" class="btn btn-outline-warning btn-sm px-3 me-1">
+              <i class="bi bi-pencil me-1"></i>Edit
+            </a>
+            <a href="{{url_for('delete', id=expense.id)}}" class="btn btn-outline-danger btn-sm px-3" onclick="return confirm('Delete this record from audit ledger?');">
+              <i class="bi bi-trash me-1"></i>Delete
+            </a>
+          </td>
         </tr>
         {% endfor %}
-        </tbody>
-        {% else %}
-        <p>No Expense is added</p>
+      </tbody>
+      {% else %}
+      <tbody>
+        <tr>
+          <td colspan="5" class="text-center py-4 text-muted">
+            <i class="bi bi-inbox fs-3 d-block mb-1"></i>
+            No business expenses logged in this cycle yet.
+          </td>
+        </tr>
+      </tbody>
       {% endif %}
     </table>
   </div>
-  </div>
 </div>
-  {% endblock body %}
+
+{% endblock body %}

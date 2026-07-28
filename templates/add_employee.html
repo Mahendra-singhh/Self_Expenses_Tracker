@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="container py-2">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="fw-bold text-dark mb-1">
+        <i class="bi bi-person-vcard text-primary me-2"></i>Register New Employee
+      </h4>
+      <p class="text-muted small mb-0">Fill out staff bio-data to add them to your business roster.</p>
+    </div>
+    <a href="{{ url_for('employees') }}" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-arrow-left me-1"></i> Back to Employee List
+    </a>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show py-2 px-3 small mb-3">
+          {{ message }}
+          <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="card border-0 shadow-sm rounded-3 bg-white p-4">
+    <form action="{{ url_for('add_employee') }}" method="POST">
+
+      <!-- Section 1 -->
+      <div class="border-bottom pb-3 mb-3">
+        <h6 class="fw-semibold text-primary small mb-3">1. Personal Information</h6>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold text-secondary">Full Name <span class="text-danger">*</span></label>
+            <input type="text" name="name" class="form-control form-control-sm" placeholder="e.g. Rahul Kumar" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold text-secondary">Father's Name <span class="text-danger">*</span></label>
+            <input type="text" name="father_name" class="form-control form-control-sm" placeholder="e.g. Suresh Kumar" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold text-secondary">Religion <small class="text-muted">(Optional)</small></label>
+            <select name="religion" class="form-select form-select-sm">
+              <option value="" selected>Select Religion</option>
+              <option value="Hinduism">Hinduism</option>
+              <option value="Islam">Islam</option>
+              <option value="Sikhism">Sikhism</option>
+              <option value="Christianity">Christianity</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="border-bottom pb-3 mb-3">
+        <h6 class="fw-semibold text-primary small mb-3">2. Contact Details</h6>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold text-secondary">Primary Mobile No <span class="text-danger">*</span></label>
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">+91</span>
+              <input type="tel" name="mobile" class="form-control form-control-sm" placeholder="10-digit number" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold text-secondary">Alternate Mobile <small class="text-muted">(Optional)</small></label>
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">+91</span>
+              <input type="tel" name="alternate_mobile" class="form-control form-control-sm" placeholder="Emergency contact">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold text-secondary">Email Address <small class="text-muted">(Optional)</small></label>
+            <input type="email" name="email" class="form-control form-control-sm" placeholder="name@example.com">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="border-bottom pb-3 mb-3">
+        <h6 class="fw-semibold text-primary small mb-3">3. Address Details <small class="text-muted fw-normal">(Optional)</small></h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-secondary">Current Address</label>
+            <textarea name="current_address" class="form-control form-control-sm" rows="2" placeholder="House No, Street, City"></textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-secondary">Permanent Address</label>
+            <textarea name="permanent_address" class="form-control form-control-sm" rows="2" placeholder="Permanent residence address"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="mb-4">
+        <h6 class="fw-semibold text-primary small mb-3">4. Role & Salary Terms</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-secondary">Position / Designation <span class="text-danger">*</span></label>
+            <input type="text" name="designation" class="form-control form-control-sm" placeholder="e.g. Cashier, Store Manager" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold text-secondary">Monthly Fixed Salary (₹) <span class="text-danger">*</span></label>
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">₹</span>
+              <input type="number" step="0.01" name="salary" class="form-control form-control-sm" placeholder="e.g. 18000" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+        <a href="{{ url_for('employees') }}" class="btn btn-light btn-sm px-4">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold">
+          <i class="bi bi-check-lg me-1"></i> Save & Register
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+{% endblock body %}

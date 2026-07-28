@@ -1,80 +1,133 @@
- {% extends 'profile.html' %}
- {% block body %}
-  
-<div class="loan">
-   <a href="">My Loans</a>
- <form method="POST" action='/loans'>
-  <div class="form-group">
-    <label for="course">Loan:</label>
+{% extends 'base.html' %}
+{% block body %}
+<!-- ###Client Dues & Credit Receivables-->
+<div class="container py-2">
 
-<select class="select-input" id="course"  name="loan">
-  <option value="home">Home-Loan</option>
-  <option value="car">Car-Loan</option>
-  <option value="person">Personal-Loan</option>
-    <option value="misc">Miscellaneous</option>
-</select>
-</div>
-
-
-  <div class="form-group">
-    <label for="exampleInputEmail1">Amount</label>
-    <input type="text" name="amount"class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Amount">
- <div class="Two">
-  <div class="form-group">
-    <label for="exampleInputPass   word1">Monthly EMI</label>
-    <input type="number" name="monthly"class="form-control" id="exampleInputPassword1" placeholder="Emi">
+  <!-- Page Header & Summary Badges -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="fw-bold text-dark mb-1">
+        <i class="bi bi-wallet2 text-primary me-2"></i>Client Dues & Credit Receivables
+      </h4>
+      <p class="text-muted small mb-0">Track commercial loans, vendor EMIs, and pending client receivables.</p>
+    </div>
+    
+    <div class="bg-white p-2 px-3 rounded-3 shadow-sm border text-end">
+      <small class="text-muted d-block fw-semibold">TOTAL ACTIVE RECORDS</small>
+      <span class="badge bg-primary fs-6">{{ loans|length if loans else 0 }} Entries</span>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="exampleInputPass   word1">Duration</label>
-    <input type="date" name="duration"class="form-control" id="exampleInputPassword1" placeholder="Emi">
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, ms in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show py-2 px-3 small mb-4" role="alert">
+          {{ ms }}
+          <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="row g-4">
+
+    <!-- 🔹 Form Column (Record New Due/Loan) -->
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm rounded-3 p-4 bg-white">
+        <h6 class="fw-bold text-dark mb-3">
+          <i class="bi bi-plus-circle text-primary me-2"></i>Record New Credit / Receivable
+        </h6>
+
+        <form method="POST" action="/loans">
+          
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-secondary">Credit / Loan Category</label>
+            <select class="form-select form-select-sm" name="loan" required>
+              <option value="Client Due" selected>Client Receivable (Due Payment)</option>
+              <option value="Vendor EMI">Vendor / Equipment EMI</option>
+              <option value="Business Loan">Commercial Business Loan</option>
+              <option value="Personal Loan">Personal / Miscellaneous Loan</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-secondary">Principal Amount (₹)</label>
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">₹</span>
+              <input type="number" step="0.01" name="amount" class="form-control" placeholder="e.g. 50000" required>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Monthly EMI (₹)</label>
+              <input type="number" step="0.01" name="monthly" class="form-control form-control-sm" placeholder="e.g. 4500" required>
+            </div>
+            
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold text-secondary">Maturity / Due Date</label>
+              <input type="date" name="duration" class="form-control form-control-sm" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold shadow-sm mt-2">
+            <i class="bi bi-check-lg me-1"></i> Save Credit Entry
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 🔹 Table Column (Active Ledgers) -->
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
+        <h6 class="fw-bold text-dark mb-3">
+          <i class="bi bi-journal-text text-secondary me-2"></i>Active Receivables & Liabilities
+        </h6>
+
+        {% if loans %}
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Monthly EMI</th>
+                  <th scope="col">Due Date</th>
+                  <th scope="col" class="text-end">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for loan in loans %}
+                <tr>
+                  <th scope="row">{{ loop.index }}</th>
+                  <td>
+                    <span class="badge bg-light text-dark border">{{ loan.loan_type }}</span>
+                  </td>
+                  <td class="fw-bold text-dark">₹ {{ "%.2f"|format(loan.amount) }}</td>
+                  <td class="text-primary fw-semibold">₹ {{ loan.monthly }}</td>
+                  <td class="text-muted small">{{ loan.duration }}</td>
+                  <td class="text-end">
+                    <span class="badge bg-warning text-dark">Active</span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="text-center py-5 text-muted">
+            <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+            <h6 class="fw-semibold">No Active Loans or Receivables Logged</h6>
+            <p class="small text-muted mb-0">Use the form to record incoming client dues or outgoing EMIs.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
   </div>
+
 </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-</div>
-{% with messages =get_flashed_messages(with_categories=true) %}
-{%if messages%}
-{% for  category,ms in messages  %}
-<div class="alert alert-{{category}}">
-  {{ms}}
-</div>
-{% endfor %}
-{%endif%}
-{% endwith %}
-{%if loans%}
 
-
-<table class="table mt-4">
-  <thead>
-  <tr>
-    <td>#</td>
-    <td>Loan Type</td>
-    <td>Loam Amount</td>
-    <td>Monthly Emi</td>
-    <td>Duration</td>
-  </tr>
-</thead>
-<tbody>
-{%for loan in loans%}
-  <tr>
-    <td>{{loop.index}}</td>
-    <td>{{loan.loan_type}}</td>
-    <td>{{loan.amount}}</td>
-    <td>{{loan.monthly}}</td>
-    <td>{{loan.duration}}</td>
-    <td></td>
-  </tr>
-  {%endfor%}
-  </tbody>
-    {%else%}
-    NO Active loans
-    {%endif%}
-
-  
-
-
-
-
-
-
-  {%endblock body%}
+{% endblock body %}

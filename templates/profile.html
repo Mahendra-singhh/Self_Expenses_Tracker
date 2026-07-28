@@ -3,24 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker</title>
+    <title>Enterprise Flow - B2B Financial & Dues Management</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body class="bg-light">
 
-<!-- 🔹 Navbar -->
-<nav class="navbar navbar-expand-lg ">
-  <div class="container-fluid">
+<!-- 🔹 Enterprise Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container-fluid px-4">
 
-    <a class="navbar-brand" href="{{url_for('home')}}">💰 ExpenseTracker</a>
+    <!-- Brand Header -->
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-warning" href="{{url_for('home')}}">
+      <i class="bi bi-building-gear fs-4"></i>
+      <span>EnterpriseFlow</span>
+      
+    </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
@@ -28,37 +36,58 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
 
-      <!-- Left menu -->
-      <ul class="navbar-nav me-auto">
-       
+      <!-- Left Business Modules -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('expense')}}">Expense</a>
+          <a class="nav-link px-3" href="{{url_for('expense')}}">
+            <i class="bi bi-wallet2 me-1"></i> Expenses
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('emi')}}">EMI's</a>
+          <a class="nav-link px-3" href="{{url_for('loans')}}">
+            <i class="bi bi-person-exclamation me-1"></i> Client Dues & Receivables
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('loans')}}">Loans</a>
+          <a class="nav-link px-3" href="{{url_for('emi')}}">
+            <i class="bi bi-arrow-repeat me-1"></i> Vendor Liabilities & EMIs
+          </a>
+        </li>
+        
+<li class="nav-item">
+  <a class="nav-link px-3" href="{{ url_for('employees') }}">
+    <i class="bi bi-people me-1"></i> Employees
+  </a>
+</li>
+
+        <li class="nav-item">
+          <a class="nav-link px-3 text-info fw-semibold" href="{{url_for('export_csv') if 'export_csv' in endpoints else '#'}}" onclick="alert('Exporting Ledger for Accounting/CA Audit...');">
+            <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export as Excel
+          </a>
         </li>
       </ul>
 
-      <!-- Right side -->
+      <!-- Right Business Profile Side -->
       <div class="d-flex align-items-center gap-3">
-        <span class="text-white">👤 {{username}}</span>
-        <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Logout</a>
+        <div class="text-end">
+          <small class="d-block text-muted" style="font-size: 0.75rem;">BUSINESS ACCOUNT</small>
+          <span class="text-white fw-medium"><i class="bi bi-person-circle me-1"></i> {{username}}</span>
+        </div>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm px-3">Logout</a>
       </div>
 
     </div>
   </div>
 </nav>
 
-<!-- 🔹 Main Content -->
-<div class="container mt-4">
+<!-- 🔹 Main Content Container -->
+<div class="container mt-4 mb-5">
     {% block body %}
     {% endblock %}
 </div>
 
-<!-- ✅ Bootstrap JS (IMPORTANT) -->
+<!-- ✅ Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
